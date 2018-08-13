@@ -10,4 +10,4 @@ Run this to auto build `src/*.ts` into `build/*.js`:
 
 Run this to build `release/app.js` and update it when `build/*.js` changes:
 
-    make autodeploy
+    clear; make autodeploy --silent

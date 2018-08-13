@@ -1,5 +1,7 @@
 An experiment with TypeScript and possibly a game later on.
 
+If you use VSCode it will autosave on changes.
+
 Setup:
 
     yarn install

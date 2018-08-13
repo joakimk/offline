@@ -10,3 +10,6 @@ autodeploy: rebuild deploy
 
 deploy:
 	cat build/*.js > release/app.js
+
+release: rebuild
+	ls # todo: minify, build html and check size

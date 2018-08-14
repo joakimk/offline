@@ -1,15 +1,17 @@
 rebuild:
 	rm -f build/*.js
-	node_modules/.bin/tsc src/*.ts --outDir build/ --noEmitOnError
+	node_modules/.bin/tsc --target es6 --noEmitOnError --outDir build/ src/*.ts
 
 watch:
-	node_modules/.bin/tsc --watch src/*.ts --outDir build/ --noEmitOnError
+	node_modules/.bin/tsc --target es6 --noEmitOnError --outDir build/ --watch src/*.ts
 
 autodeploy: rebuild deploy
-	fswatch --monitor=fsevents_monitor build/ | (while read; do echo "Updating..."; make deploy; done)
+	fswatch build/ | (while read; do echo "Updating..."; make deploy; done)
 
 deploy:
-	cat build/*.js > release/app.js
+	cat vendor/*.js build/*.js > build/output/app.js
+	echo "main();" >> build/output/app.js
+	script/build_html
 
 release: rebuild
 	ls # todo: minify, build html and check size

@@ -13,3 +13,10 @@ Run this to auto build `src/*.ts` into `build/*.js`:
 Run this to build `release/app.js` and update it when `build/*.js` changes:
 
     clear; make autodeploy --silent
+
+# Notes
+
+How types for three.js was added:
+
+    yarn add typings
+    node_modules/.bin/typings install dt~three --global

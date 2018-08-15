@@ -1,31 +1,44 @@
 /// <reference path="../typings/index.d.ts" />
 
-let camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000)
-let renderer = new THREE.WebGLRenderer({ antialias: true })
+class Main {
+  private camera: THREE.Camera
+  private renderer: THREE.Renderer
+  private cube: THREE.Mesh
+  private scene: THREE.Scene
 
-let geometry = new THREE.BoxGeometry(1, 1, 1)
-let material = new THREE.MeshBasicMaterial({ color: 0xff0051 })
-let cube = new THREE.Mesh(geometry, material)
+  constructor() {
+    this.camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000)
+    this.renderer = new THREE.WebGLRenderer({ antialias: true })
 
-//let light = new THREE.AmbientLight("#fff", 0.1)
+    let geometry = new THREE.BoxGeometry(1, 1, 1)
+    let material = new THREE.MeshBasicMaterial({ color: 0xff0051 })
+    this.cube = new THREE.Mesh(geometry, material)
 
-let scene = new THREE.Scene()
+    //let light = new THREE.AmbientLight("#fff", 0.1)
 
-function main() {
-  renderer.setSize(window.innerWidth, window.innerHeight)
-  document.body.appendChild(renderer.domElement)
+    this.scene = new THREE.Scene()
+  }
 
-  camera.position.z = 5
-  scene.add(cube)
+  start() {
+    this.renderer.setSize(window.innerWidth, window.innerHeight)
+    document.body.appendChild(this.renderer.domElement)
 
-  animate()
+    this.camera.position.z = 5
+    this.scene.add(this.cube)
+
+    this.animate()
+  }
+
+  private animate() {
+    requestAnimationFrame(() => { this.animate() })
+
+    this.cube.rotation.x += 0.03;
+    this.cube.rotation.y += 0.02;
+
+    this.renderer.render(this.scene, this.camera)
+  }
 }
 
-function animate() {
-  requestAnimationFrame(animate)
-
-  cube.rotation.x += 0.02;
-  cube.rotation.y += 0.02;
-
-  renderer.render(scene, camera)
+function main() {
+  new Main().start()
 }

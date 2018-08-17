@@ -1,28 +1,8 @@
 let model: Model = (<any>window).model
 let modelHistory = new ModelHistory()
 
-class Kontra {
-  public canvas: any
-  private kontra: any
-
-  constructor(kontra) {
-    this.kontra = kontra
-    kontra.init()
-
-    this.canvas = kontra.canvas
-  }
-
-  sprite(opts) {
-    return this.kontra.sprite(opts)
-  }
-
-  gameLoop(opts) {
-    return this.kontra.gameLoop(opts)
-  }
-}
-
-function startApp(rawKontra, versionAtStart) {
-  let kontra = new Kontra(rawKontra)
+function startApp(kontra, versionAtStart) {
+  kontra.init()
 
   let sprite = kontra.sprite({
     x: model.x,        // starting x,y position of the sprite
@@ -40,10 +20,7 @@ function startApp(rawKontra, versionAtStart) {
       }
 
       model.x += 1.0
-
       modelHistory.save(model)
-
-      sprite.update();
 
       // wrap the sprites position when it reaches
       // the edge of the screen
@@ -52,11 +29,14 @@ function startApp(rawKontra, versionAtStart) {
       }
 
       sprite.x = model.x
+
+      sprite.update();
     },
+
     render: function () {        // render the game state
-      sprite.render();
+      sprite.render()
     }
-  });
+  })
 
   loop.start();    // start the game
 }

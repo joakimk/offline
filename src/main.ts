@@ -1,9 +1,5 @@
-if (!(<any>window).model) {
-  (<any>window).model = {
-    x: 0
-  }
-}
-let model = (<any>window).model
+let model: Model = (<any>window).model
+let modelHistory = new ModelHistory()
 
 class Kontra {
   public canvas: any
@@ -25,8 +21,6 @@ class Kontra {
   }
 }
 
-let gameLoop = null
-
 function startApp(rawKontra, versionAtStart) {
   let kontra = new Kontra(rawKontra)
 
@@ -45,8 +39,11 @@ function startApp(rawKontra, versionAtStart) {
         return
       }
 
-      sprite.update();
       model.x += 1.0
+
+      modelHistory.save(model)
+
+      sprite.update();
 
       // wrap the sprites position when it reaches
       // the edge of the screen

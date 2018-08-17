@@ -1,44 +1,68 @@
-/// <reference path="../typings/index.d.ts" />
+if (!(<any>window).model) {
+  (<any>window).model = {
+    x: 0
+  }
+}
+let model = (<any>window).model
 
-class Main {
-  private camera: THREE.Camera
-  private renderer: THREE.Renderer
-  private cube: THREE.Mesh
-  private scene: THREE.Scene
+class Kontra {
+  public canvas: any
+  private kontra: any
 
-  constructor() {
-    this.camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000)
-    this.renderer = new THREE.WebGLRenderer({ antialias: true })
+  constructor(kontra) {
+    this.kontra = kontra
+    kontra.init()
 
-    let geometry = new THREE.BoxGeometry(1, 1, 1)
-    let material = new THREE.MeshBasicMaterial({ color: 0xff0051 })
-    this.cube = new THREE.Mesh(geometry, material)
-
-    //let light = new THREE.AmbientLight("#fff", 0.1)
-
-    this.scene = new THREE.Scene()
+    this.canvas = kontra.canvas
   }
 
-  start() {
-    this.renderer.setSize(window.innerWidth, window.innerHeight)
-    document.body.appendChild(this.renderer.domElement)
-
-    this.camera.position.z = 5
-    this.scene.add(this.cube)
-
-    this.animate()
+  sprite(opts) {
+    return this.kontra.sprite(opts)
   }
 
-  private animate() {
-    requestAnimationFrame(() => { this.animate() })
-
-    this.cube.rotation.x += 0.03;
-    this.cube.rotation.y += 0.02;
-
-    this.renderer.render(this.scene, this.camera)
+  gameLoop(opts) {
+    return this.kontra.gameLoop(opts)
   }
 }
 
-function main() {
-  new Main().start()
+let gameLoop = null
+
+function startApp(rawKontra, versionAtStart) {
+  let kontra = new Kontra(rawKontra)
+
+  let sprite = kontra.sprite({
+    x: model.x,        // starting x,y position of the sprite
+    y: 80,
+    color: 'red',  // fill color of the sprite rectangle
+    width: 20,     // width and height of the sprite rectangle
+    height: 40,
+  });
+
+  let loop = kontra.gameLoop({  // create the main game loop
+    update: function () {        // update the game state
+      if (versionAtStart != (<any>window).version) {
+        loop.stop()
+        return
+      }
+
+      sprite.update();
+      model.x += 1.0
+
+      // wrap the sprites position when it reaches
+      // the edge of the screen
+      if (model.x > kontra.canvas.width) {
+        model.x = -sprite.width;
+      }
+
+      sprite.x = model.x
+    },
+    render: function () {        // render the game state
+      sprite.render();
+    }
+  });
+
+  loop.start();    // start the game
+}
+
+function stopApp() {
 }

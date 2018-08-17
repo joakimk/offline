@@ -1,16 +1,19 @@
-rebuild:
-	rm -f build/*.js
-	node_modules/.bin/tsc --target es6 --noEmitOnError --outDir build/ src/*.ts
+live:
+	node script/live_update_server.js
 
 watch:
-	node_modules/.bin/tsc --target es6 --noEmitOnError --outDir build/ --watch src/*.ts
+	node_modules/.bin/tsc --target es6 --noEmitOnError --outFile build/app.js --watch src/*.ts
 
-autodeploy: rebuild deploy
-	fswatch build/ | (while read; do echo "Updating..."; make deploy; done)
+rebuild:
+	rm -f build/*.js
+	node_modules/.bin/tsc --target es6 --noEmitOnError --outFile build/app.js src/*.ts
 
-deploy:
-	cat vendor/*.js build/*.js > build/output/app.js
-	echo "main();" >> build/output/app.js
+debug: rebuild debug_update
+
+debug_update:
+	cat vendor/*.js build/app.js > build/bundle.js
+	cat script/support/live_update_client.js >> build/bundle.js
+	echo ";startApp(kontra, 0);" >> build/bundle.js
 	script/build_html
 
 release: rebuild

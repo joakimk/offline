@@ -5,12 +5,18 @@ let modelHistory = new ModelHistory()
 function startApp(kontra, versionAtStart) {
   kontra.init()
 
+  let background = kontra.sprite({
+    x: 0, y: 0, color: "black",
+    width: kontra.canvas.width,
+    height: kontra.canvas.height,
+  })
+
   let sprite = kontra.sprite({
-    x: 0,        // starting x,y position of the sprite
+    x: model.x,
     y: 0,
-    color: 'red',  // fill color of the sprite rectangle
-    width: 4000,     // width and height of the sprite rectangle
-    height: 4000,
+    color: "red",
+    width: 20,
+    height: 20,
   })
 
   let loop = kontra.gameLoop({  // create the main game loop
@@ -20,17 +26,16 @@ function startApp(kontra, versionAtStart) {
         return
       }
 
-      //model.x += 1.0
+      model.x += 1.0
       modelHistory.save(model)
 
       // wrap the sprites position when it reaches
       // the edge of the screen
-      if (model.x > kontra.canvas.height) {
-        model.x = -sprite.height;
+      if (model.x > kontra.canvas.width) {
+        model.x = -sprite.width;
       }
 
-      //sprite.x = model.x
-      //sprite.y = model.x
+      sprite.x = model.x
 
       sprite.update();
     },
@@ -40,6 +45,7 @@ function startApp(kontra, versionAtStart) {
         return
       }
 
+      background.render()
       sprite.render()
     }
   })

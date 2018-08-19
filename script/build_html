@@ -2,4 +2,4 @@
 
 set -e
 
-echo "<html><head><style>body { margin: 0 };</style><body><canvas style='width: 100%; height: 100%'></canvas><script type=\"text/javascript\">$(cat build/bundle.js)</script></body></html>" > release/offline.html
+ruby -e "puts File.read('src/index.html').sub('SCRIPT_CONTENT', File.read('build/bundle.js'))" > release/offline.html

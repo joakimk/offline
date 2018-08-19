@@ -6,7 +6,17 @@ fs = require("fs")
 const WebSocket = require("ws")
 const wss = new WebSocket.Server({ port: 4455 })
 var clientSocket = null
-wss.on("connection", function connection(ws) { clientSocket = ws })
+wss.on("connection", function connection(ws) {
+  console.log("[live_update_server] New client connection")
+  clientSocket = ws
+})
+
+// Serve html
+var http = require("http")
+http.createServer(function (req, res) {
+  res.write(fs.readFileSync("release/offline.html", "utf8"));
+  res.end()
+}).listen(4444)
 
 function main() {
   compileOnChangesAnd(rebuildAndPublishChanges)

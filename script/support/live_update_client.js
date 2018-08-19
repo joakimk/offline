@@ -1,4 +1,4 @@
-let ws = new WebSocket("ws://localhost:4455")
+let ws = new WebSocket("ws://" + window.location.hostname + ":4455")
 
 window.version = 0
 

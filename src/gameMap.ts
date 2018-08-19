@@ -9,17 +9,28 @@ class GameMap {
         let sprite = kontra.sprite({
           x: 45 * x + 7.5,
           y: 45 * y + 2,
-          width: 43,
-          height: 43,
+          width: 44,
+          height: 44,
           onDown: () => {
             state = model.update("toggleMapIndex", mapIndex)
             this.setState(sprite, state)
+            this.setFillerState(sprite2, state)
           },
         })
 
+        let sprite2 = kontra.sprite({
+          x: 45 * x + 7.5,
+          y: 45 * y + 2,
+          width: 46,
+          height: 46,
+        })
+
         this.setState(sprite, state)
+        this.setFillerState(sprite2, state)
+
         kontra.pointer.track(sprite)
 
+        this.sprites.push(sprite2)
         this.sprites.push(sprite)
       }
     }
@@ -36,6 +47,14 @@ class GameMap {
       block.color = "green"
     } else {
       block.color = "blue"
+    }
+  }
+
+  private setFillerState(block, state) {
+    if (state == "g") {
+      block.color = "#080"
+    } else {
+      block.color = "#00e"
     }
   }
 }

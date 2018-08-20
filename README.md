@@ -11,10 +11,3 @@ Run this to auto build `src/*.ts` into `release/offline.html`:
     make live
 
 This also starts a web server at http://localhost:4444 and live updating via web socket.
-
-# Notes
-
-How types for three.js was added:
-
-    yarn add typings
-    node_modules/.bin/typings install dt~three --global

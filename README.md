@@ -6,13 +6,11 @@ Setup:
 
     yarn install
 
-Run this to auto build `src/*.ts` into `build/*.js`:
+Run this to auto build `src/*.ts` into `release/offline.html`:
 
-    make watch
+    make live
 
-Run this to build `release/app.js` and update it when `build/*.js` changes:
-
-    clear; make autodeploy --silent
+This also starts a web server at http://localhost:4444 and live updating via web socket.
 
 # Notes
 

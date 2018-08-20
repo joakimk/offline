@@ -22,7 +22,7 @@ function startApp(kontra, versionAtStart) {
       modelHistory.save(model)
     },
 
-    render: function () {        // render the game state
+    render: function () {
       if (versionAtStart != (<any>window).version) {
         return
       }
@@ -32,7 +32,7 @@ function startApp(kontra, versionAtStart) {
     }
   })
 
-  loop.start();    // start the game
+  loop.start()
 }
 
 function stopApp() {
